@@ -8,21 +8,30 @@ export default function Home() {
 
   // for pagination purposes
   const [currentPage, setCurrentPage] = useState(1);
-  const perPage = 7;
+  const perPage = 9;
 
   //   real code
-  useEffect(() => {
-    const fetchRepos = async () => {
-      const res = await fetch(
-        // `https://api.github.com/users/${users}/repos?page=1&per_page=10&sort=updated`
-        `https://api.github.com/users/${users}/repos?page=${currentPage}&per_page=${perPage}&sort=updated`
-      );
-      const data = await res.json();
-      setItems(data);
-    };
+  // useEffect(() => {
+  //   const fetchRepos = async () => {
+  //     const res = await fetch(
+  //       // `https://api.github.com/users/${users}/repos?page=1&per_page=10&sort=updated`
+  //       `https://api.github.com/users/${users}/repos?page=${currentPage}&per_page=${perPage}&sort=updated`
+  //     );
+  //     const data = await res.json();
+  //     setItems(data);
+  //   };
 
-    fetchRepos();
-  }, [currentPage, users, perPage]);
+  //   fetchRepos();
+  // }, [currentPage, users, perPage]);
+
+  useEffect(() => {
+    fetch(
+      // `https://api.github.com/users/repos?page=${currentPage}&per_page=${perPage}&sort=updated`
+      `https://api.github.com/users/emery-hub/repos??page=${currentPage}&per_page=${perPage}&sort=updated`)
+      .then((response) => response.json())
+      .then((data) => setItems(data))
+      .catch((error) => console.error("Error fetching repositories:", error));
+  }, [currentPage, perPage]);
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
@@ -62,7 +71,7 @@ export default function Home() {
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 mt-10">
               {items.map((item) => (
                 <Link
-                  to={`/${item.name}`}
+                  to={`/name/${item.name}`}
                   key={item.id}
                   className="bg-emerald-200 p-4 rounded hover:bg-emerald-300 transition-all duration-200"
                 >
